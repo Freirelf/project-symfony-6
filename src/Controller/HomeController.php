@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HomeController extends AbstractController
 {
   #[Route('/', name: 'app_home')]
-  public function index(): Response
+  public function index(LoggerInterface $logger): Response
   { 
 
+    $logger->info('Hello World!');
     $categories = [
       ['title' =>  'World', 'text' => 'World news' ],
       ['title' =>  'Brazil', 'text' => 'Brazil news' ],
@@ -59,4 +62,12 @@ class HomeController extends AbstractController
       'pageTitle' => $pageTitle
     ]);
   }
+  #[Route('/news/{id}')]
+  public function newDatails(int $id=null, HttpClientInterface $httpClient)
+  {
+    $response = $httpClient->request('GET','https://127.0.0.1:8000/api/news/' . $id);
+    dump($response);
+    exit;
+  }
 }
+
