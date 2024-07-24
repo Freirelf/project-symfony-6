@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+
+use App\Service\NewsService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,41 +12,26 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class HomeController extends AbstractController
 {
   #[Route('/', name: 'app_home')]
-  public function index(HttpClientInterface $httpClient): Response
+  public function index(NewsService $service): Response
   { 
     $pageTitle = 'BE News';
     return $this->render(view: 'home/index.html.twig', parameters:[
-      'categories' => $this->getCategoryList($httpClient),
-      'pageTitle' => $pageTitle
+      'pageTitle' => $pageTitle,
+      'categories' => $service->getCategoryList(),
     ]);
   }
 
   #[Route('/category/{slug}', name: 'app_category')]
-  public function category( string $slug=null, HttpClientInterface $httpClient  ): Response
+  public function category( string $slug=null, NewsService $service ): Response
   {  
     $pageTitle = 'BE News | '.$slug;
     return $this->render(view: 'category/category.html.twig', parameters:[
       'pageTitle' => $pageTitle,
-      'categories' => $this->getCategoryList($httpClient),
-      'news' => $this->getNewsList($httpClient),
+      'categories' => $service->getCategoryList(),
+      'news' => $service->getNewsList(),
     ]);
   }
 
-  public function getCategoryList( $httpClient ){
-    $url= "https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json";
-    $html = $httpClient->request('GET', $url);
-    $news = $html->toArray();  
-
-    return $news;
-  }
-
-  public function getNewsList( $httpClient ){
-    $url= "https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayNews.json";
-    $html = $httpClient->request('GET', $url);
-    $news = $html->toArray();  
-
-    return $news;
-  }
   #[Route('/news/{id}')]
   public function newDatails(int $id=null, HttpClientInterface $httpClient)
   {
