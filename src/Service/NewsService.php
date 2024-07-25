@@ -8,14 +8,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class NewsService
 {
-  public function __construct(private HttpClientInterface $httpClient, private CacheInterface $cache)
+  public function __construct(private HttpClientInterface $httpClient, private CacheInterface $cache, private bool $isDebug)
   {
 
   }
 
   public function getCategoryList(){
     $categories = $this->cache->get('news_category', function (CacheItemInterface $cacheItem) {
-      $cacheItem->expiresAfter(60);
+      $cacheItem->expiresAfter($this->isDebug ? 5 : 60);
+
       $url= "https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json";
       $html = $this->httpClient->request('GET', $url);
       $news = $html->toArray();  
@@ -28,7 +29,7 @@ class NewsService
 
   public function getNewsList(){
     $newsList = $this->cache->get('news_list', function (CacheItemInterface $cacheItem) {
-      $cacheItem->expiresAfter(60);
+      $cacheItem->expiresAfter($this->isDebug ? 5 : 60);
       $url= "https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayNews.json";
       $html = $this->httpClient->request('GET', $url);
       $news = $html->toArray();  
