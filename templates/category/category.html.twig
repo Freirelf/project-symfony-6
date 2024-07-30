@@ -26,8 +26,8 @@
               <div class="card shadow-sm">
                 {% set slugParts = pageTitle | split(' ') %}
                 {% set slugText = slugParts[1] %}
-                <img src="https://loremflickr.com/419/225/{{slugText}}&id={{ loop.index}}">
-
+                {# <img src="https://loremflickr.com/419/225/{{slugText}}&id={{ loop.index}}"> #}
+                <img src={{itemNews.image}} />
                 <div class="card-body">
                   <h3>{{itemNews.title}}</h3>
                   <p class="card-text">{{itemNews.description}}</p>
@@ -36,7 +36,7 @@
                       <button type="button" class="btn btn-sm btn-outline-secondary">Visualizações</button>
                       <button type="button" class="btn btn-sm btn-outline-secondary">Detalhes</button>
                     </div>
-                    <small class="text-muted">{{itemNews.create_at|ago}}</small>
+                    <small class="text-muted">{{itemNews.createAt|ago}}</small>
                   </div>
                 </div>
               </div>

@@ -26,14 +26,13 @@ class HomeController extends AbstractController
     }
 
     #[Route('/category/{slug}', name: 'app_category')]
-    public function category(string $slug = null, NewsRepository $newsRepository): Response
+    public function category(string $slug = null, EntityManagerInterface $entityManager): Response
     {   
-        $categories = $newsRepository->findAllCategories();
+        $newsRepository = $entityManager->getRepository(News::class); 
         $news = $newsRepository->findAll();
         $pageTitle = 'BE News | ' . $slug;
         return $this->render(view: 'category/category.html.twig', parameters: [
             'pageTitle' => $pageTitle,
-            'categories' => $categories,
             'news' => $news,
         ]);
     }
