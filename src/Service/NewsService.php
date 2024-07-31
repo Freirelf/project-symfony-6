@@ -17,12 +17,12 @@ class NewsService
   {
 
   }
-
-  public function getCategoryList(){
+  public function findAll(): array
+  {
     $categories = $this->cache->get('news_category', function (CacheItemInterface $cacheItem) {
       $cacheItem->expiresAfter($this->isDebug ? 5 : 60);
 
-      $url= "https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json";
+      $url= "https://raw.githubusercontent.com/JonasPoli/array-news/6592605d783b39aa2edac63868959ded7ef700ec/arrayNews.json";
       $html = $this->httpClient->request('GET', $url);
       $news = $html->toArray();  
 
@@ -32,13 +32,14 @@ class NewsService
     return $categories;
   }
 
-  public function getNewsList(){
+  public function findAllCategories():array
+  {
     $newsList = $this->cache->get('news_list', function (CacheItemInterface $cacheItem) {
       $cacheItem->expiresAfter($this->isDebug ? 5 : 60);
-      $url= "https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayNews.json";
+      $url= "https://raw.githubusercontent.com/JonasPoli/array-news/main/arrayCategoryNews.json";
       $html = $this->httpClient->request('GET', $url);
       $news = $html->toArray();  
-  
+      
       return $news;
     });
 

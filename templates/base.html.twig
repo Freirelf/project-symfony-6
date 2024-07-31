@@ -37,7 +37,7 @@
             <nav class="nav d-flex justify-content-between">
                 {% if categories is defined %}
                     {% for category in categories %}
-                        <a class="p-2 link-secondary" href="{{ path('app_category', {'slug':category.title})}}">{{ category.title}}</a>
+                        <a class="p-2 link-secondary" title="{{category.title}}" href="{{ path('app_category', {'slug':category.title})}}">{{ category.title}}</a>
                     {% endfor %}
                 {% endif %}
             </nav>  

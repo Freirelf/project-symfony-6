@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\News;
+use App\Entity\NewsCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<News>
+ * @extends ServiceEntityRepository<NewsCategory>
  *
- * @method News|null find($id, $lockMode = null, $lockVersion = null)
- * @method News|null findOneBy(array $criteria, array $orderBy = null)
- * @method News[]    findAll()
- * @method News[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method NewsCategory|null find($id, $lockMode = null, $lockVersion = null)
+ * @method NewsCategory|null findOneBy(array $criteria, array $orderBy = null)
+ * @method NewsCategory[]    findAll()
+ * @method NewsCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class NewsRepository extends ServiceEntityRepository
+class NewsCategoryRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry, private NewsCategoryRepository $newsCategoryRepository)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, News::class);
+        parent::__construct($registry, NewsCategory::class);
     }
 
-    public function save(News $entity, bool $flush = false): void
+    public function save(NewsCategory $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class NewsRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(News $entity, bool $flush = false): void
+    public function remove(NewsCategory $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,16 +39,8 @@ class NewsRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByCategoryTitle(string $title):array
-    {
-        $category = $this->newsCategoryRepository->findOneBy(['title' => $title]);
-        $newsCollection = $this->findBy(['category' => $category]);
-
-        return $newsCollection;
-    }
-
 //    /**
-//     * @return News[] Returns an array of News objects
+//     * @return NewsCategory[] Returns an array of NewsCategory objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -62,7 +54,7 @@ class NewsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?News
+//    public function findOneBySomeField($value): ?NewsCategory
 //    {
 //        return $this->createQueryBuilder('n')
 //            ->andWhere('n.exampleField = :val')

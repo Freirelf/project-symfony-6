@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\News;
+use App\Entity\NewsCategory;
 use App\Repository\NewsRepository;
 use App\Service\NewsService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +16,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(NewsRepository $newsRepository): Response
+    public function index(NewsService $newsRepository): Response
     {   
         $categories = $newsRepository->findAllCategories();
         $pageTitle = 'BE News';
@@ -29,11 +30,16 @@ class HomeController extends AbstractController
     public function category(string $slug = null, EntityManagerInterface $entityManager): Response
     {   
         $newsRepository = $entityManager->getRepository(News::class); 
-        $news = $newsRepository->findAll();
+        $news = $newsRepository->findByCategoryTitle($slug);
         $pageTitle = 'BE News | ' . $slug;
+
+        $newsCategoryRepository = $entityManager->getRepository(NewsCategory::class); 
+        $catgories = $newsCategoryRepository->findBy([], ['title' => 'ASC']);
+
         return $this->render(view: 'category/category.html.twig', parameters: [
             'pageTitle' => $pageTitle,
             'news' => $news,
+            'categories' => $catgories,
         ]);
     }
 
