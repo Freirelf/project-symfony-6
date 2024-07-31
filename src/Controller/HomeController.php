@@ -5,20 +5,23 @@ namespace App\Controller;
 
 use App\Entity\News;
 use App\Entity\NewsCategory;
+use App\Repository\NewsCategoryRepository;
 use App\Repository\NewsRepository;
-use App\Service\NewsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(NewsService $newsRepository): Response
+    public function index(NewsCategoryRepository $newsCategoryRepository): Response
     {   
-        $categories = $newsRepository->findAllCategories();
+
+        $categories = $newsCategoryRepository->findAllCategoriesOrderByTitle();
+
         $pageTitle = 'BE News';
         return $this->render(view: 'home/index.html.twig', parameters: [
             'pageTitle' => $pageTitle,
@@ -27,19 +30,17 @@ class HomeController extends AbstractController
     }
 
     #[Route('/category/{slug}', name: 'app_category')]
-    public function category(string $slug = null, EntityManagerInterface $entityManager): Response
+    public function category(string $slug = null, NewsCategoryRepository $newsCategoryRepository, NewsRepository $newsRepository,): Response
     {   
-        $newsRepository = $entityManager->getRepository(News::class); 
         $news = $newsRepository->findByCategoryTitle($slug);
         $pageTitle = 'BE News | ' . $slug;
 
-        $newsCategoryRepository = $entityManager->getRepository(NewsCategory::class); 
-        $catgories = $newsCategoryRepository->findBy([], ['title' => 'ASC']);
+        $categories = $newsCategoryRepository->findAllCategoriesOrderByTitle();
 
         return $this->render(view: 'category/category.html.twig', parameters: [
             'pageTitle' => $pageTitle,
             'news' => $news,
-            'categories' => $catgories,
+            'categories' => $categories,
         ]);
     }
 
@@ -61,5 +62,17 @@ class HomeController extends AbstractController
         // $response = $httpClient->request('GET', 'https://127.0.0.1:8000/api/news/' . $id);
         dd('hello');
         return new Response();
+    }
+
+    #[Route('/search', name: 'app_news_filter')]
+    public function filter(Request $request, NewsRepository $newsRepository):Response
+    {   
+        $search = $request->query->get('search');
+        $listNews = $newsRepository->findBySearch($request->query->get('search'));
+
+        return $this->render('search/search.html.twig', [
+            'news' => $listNews,
+            'search' => $search,
+        ]);
     }
 }

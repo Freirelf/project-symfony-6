@@ -1,0 +1,33 @@
+{% extends 'base.html.twig'%}
+{% block title %}Pesquisa{% endblock%}
+{% block body %}
+
+  <div class="container"> 
+    <h1> Buscando por {{ search }} </h1>
+    {% for newsItem in news %}
+      <hr>
+      <div class="row gx-5">
+        <div class="col-md-4 mb-4">
+          <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
+            <img src={{ newsItem.image }} class="img-fluid" />
+            <a href="#!">
+              <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-8 mb-4">
+          <a href="{{ path('app_category', {'slug':newsItem.category.title})}}" class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">{{ newsItem.category.title }}</a>
+          <h4><strong>{{ newsItem.title }}</strong></h4>
+          <p class="text-muted">
+            {{newsItem.description }}
+          </p>
+          <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Read more</button>
+        </div>
+      </div>
+      {% else %}
+        <h3 class="mb-5"> Não encontramos a sua pesquisa </h3>
+    {% endfor %}
+  </div>
+<!--Section: News of the day-->
+{% endblock %}
