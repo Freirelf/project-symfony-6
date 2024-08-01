@@ -56,18 +56,6 @@ class HomeController extends AbstractController
         return new Response('<h1>News Created:</h1>em:'.$news->getCreateAt()->format('Y-m-d H:i:s'));
     }
 
-    #[Route('/news/{id}', name: 'app_news_detail')]
-    public function newDetails(News $news=null): Response
-    {
-        if (!$news) {
-            throw $this->createNotFoundException('Noticia não encontrada');
-        }
-        return $this->render('details/newsDetail.html.twig', [
-           'news' => $news,
-        ]);
-
-    }
-
     #[Route('/search', name: 'app_news_filter')]
     public function filter(Request $request, NewsRepository $newsRepository):Response
     {   
@@ -78,5 +66,17 @@ class HomeController extends AbstractController
             'news' => $listNews,
             'search' => $search,
         ]);
+    }
+
+    #[Route('/news/{slug}', name: 'app_news_detail')]
+    public function newDetails(News $news=null): Response
+    {
+        if (!$news) {
+            throw $this->createNotFoundException('Noticia não encontrada');
+        }
+        return $this->render('details/newsDetail.html.twig', [
+           'news' => $news,
+        ]);
+
     }
 }

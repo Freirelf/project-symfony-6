@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NewsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 class News
@@ -31,6 +32,10 @@ class News
 
     #[ORM\ManyToOne(inversedBy: 'news')]
     private ?NewsCategory $category = null;
+
+    #[ORM\Column(length: 255, unique: true)]
+    #[Slug(fields: ['title'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -110,6 +115,18 @@ class News
     public function setCategory(?NewsCategory $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

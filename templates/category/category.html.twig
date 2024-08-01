@@ -23,7 +23,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           {% for itemNews in news %}
             <div class="col">
-              <a href="{{ path('app_news_detail', {'id': itemNews.id})}}" class="card shadow-lg text-decoration-none ">
+              <a href="{{ path('app_news_detail', {'slug': itemNews.slug})}}" class="card shadow-lg text-decoration-none ">
                 {% set slugParts = pageTitle | split(' ') %}
                 {% set slugText = slugParts[1] %}
                 
