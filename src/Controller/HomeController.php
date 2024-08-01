@@ -56,12 +56,16 @@ class HomeController extends AbstractController
         return new Response('<h1>News Created:</h1>em:'.$news->getCreateAt()->format('Y-m-d H:i:s'));
     }
 
-    #[Route('/news/{id}')]
-    public function newDetails(int $id = null, HttpClientInterface $httpClient)
+    #[Route('/news/{id}', name: 'app_news_detail')]
+    public function newDetails(News $news=null): Response
     {
-        // $response = $httpClient->request('GET', 'https://127.0.0.1:8000/api/news/' . $id);
-        dd('hello');
-        return new Response();
+        if (!$news) {
+            throw $this->createNotFoundException('Noticia não encontrada');
+        }
+        return $this->render('details/newsDetail.html.twig', [
+           'news' => $news,
+        ]);
+
     }
 
     #[Route('/search', name: 'app_news_filter')]

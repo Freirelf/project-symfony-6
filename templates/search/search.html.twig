@@ -22,7 +22,7 @@
           <p class="text-muted">
             {{newsItem.description }}
           </p>
-          <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Read more</button>
+          <a href="{{ path('app_news_detail', {'id':newsItem.id})}}" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Read more</a>
         </div>
       </div>
       {% else %}
