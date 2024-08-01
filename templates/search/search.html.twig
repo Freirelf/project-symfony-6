@@ -4,7 +4,8 @@
 
   <div class="container"> 
     <h1> Buscando por {{ search }} </h1>
-    {% for newsItem in news %}
+    {{dump(pager)}}
+    {% for newsItem in pager %}
       <hr>
       <div class="row gx-5">
         <div class="col-md-4 mb-4">
@@ -29,6 +30,7 @@
       {% else %}
         <h3 class="mb-5"> Não encontramos a sua pesquisa </h3>
     {% endfor %}
+    {{ pagerfanta(pager)}}
   </div>
 <!--Section: News of the day-->
 {% endblock %}

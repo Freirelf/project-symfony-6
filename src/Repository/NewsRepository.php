@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -61,6 +62,33 @@ class NewsRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
+
+//    /**
+//     * @return News[] Returns an array of News objects
+//     */
+public function createQueryBuilderBySearch($value): QueryBuilder
+{
+    return $this->createQueryBuilder('n')
+        ->andWhere('n.title like :val')
+        ->setParameter('val', '%'.$value.'%')           
+        ->orderBy('n.createAt', 'DESC')
+        
+    ;
+}
+
+//    /**
+//     * @return News[] Returns an array of News objects
+//     */
+public function createQueryBuilderByCategoryTitle($value): QueryBuilder
+{
+    return $this->createQueryBuilder('n')
+        ->join('n.category','c')
+        ->andWhere('c.title like :val')
+        ->setParameter('val', '%'.$value.'%')           
+        ->orderBy('n.createAt', 'DESC')
+        
+    ;
+}
 
 //    public function findOneBySomeField($value): ?News
 //    {

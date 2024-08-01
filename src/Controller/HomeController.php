@@ -8,6 +8,8 @@ use App\Entity\NewsCategory;
 use App\Repository\NewsCategoryRepository;
 use App\Repository\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,16 +32,27 @@ class HomeController extends AbstractController
     }
 
     #[Route('/category/{slug}', name: 'app_category')]
-    public function category(string $slug = null, NewsCategoryRepository $newsCategoryRepository, NewsRepository $newsRepository,): Response
+    public function category(
+        string $slug = null, 
+        NewsCategoryRepository $newsCategoryRepository, 
+        NewsRepository $newsRepository, 
+        Request $request): Response
     {   
-        $news = $newsRepository->findByCategoryTitle($slug);
+        $queryBuilder = $newsRepository->createQueryBuilderByCategoryTitle($slug);
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request ->query->get('page',1),
+            6,
+        );
+        // $news = $newsRepository->findByCategoryTitle($slug);
         $pageTitle = 'BE News | ' . $slug;
 
         $categories = $newsCategoryRepository->findAllCategoriesOrderByTitle();
 
         return $this->render(view: 'category/category.html.twig', parameters: [
             'pageTitle' => $pageTitle,
-            'news' => $news,
+            'pager' => $pagerFanta,
             'categories' => $categories,
         ]);
     }
@@ -60,10 +73,17 @@ class HomeController extends AbstractController
     public function filter(Request $request, NewsRepository $newsRepository):Response
     {   
         $search = $request->query->get('search');
-        $listNews = $newsRepository->findBySearch($request->query->get('search'));
-
+        // $listNews = $newsRepository->findBySearch($request->query->get('search'));
+        $queryBuilder = $newsRepository->createQueryBuilderBySearch($search);
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page',1),
+            6
+        );
         return $this->render('search/search.html.twig', [
-            'news' => $listNews,
+            // 'news' => $listNews,
+            'pager' => $pagerFanta,
             'search' => $search,
         ]);
     }

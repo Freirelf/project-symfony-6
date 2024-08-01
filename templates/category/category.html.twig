@@ -21,7 +21,7 @@
       <div class="container">
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          {% for itemNews in news %}
+          {% for itemNews in pager %}
             <div class="col">
               <a href="{{ path('app_news_detail', {'slug': itemNews.slug})}}" class="card shadow-lg text-decoration-none ">
                 {% set slugParts = pageTitle | split(' ') %}
@@ -42,6 +42,7 @@
               </a>
             </div>
           {% endfor %}
+          {{ pagerfanta(pager)}}
         </div>
       </div>
   </div>
