@@ -42,7 +42,7 @@ class NewsRepository extends ServiceEntityRepository
     public function findByCategoryTitle(string $title):array
     {
         $category = $this->newsCategoryRepository->findOneBy(['title' => $title]);
-        $newsCollection = $this->findBy(['category' => $category]);
+        $newsCollection = $this->findBy(['category' => $category],['createAt' => 'DESC']);
 
         return $newsCollection;
     }
@@ -55,7 +55,7 @@ class NewsRepository extends ServiceEntityRepository
        return $this->createQueryBuilder('n')
            ->andWhere('n.title like :val')
            ->setParameter('val', '%'.$value.'%')           
-           ->orderBy('n.id', 'ASC')
+           ->orderBy('n.createAt', 'DESC')
            ->setMaxResults(10)
            ->getQuery()
            ->getResult()
