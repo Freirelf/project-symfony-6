@@ -5,6 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\News;
 use App\Entity\NewsCategory;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -50,5 +53,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories', 'fa fa-bars', NewsCategory::class);
         yield MenuItem::linkToCrud('Notices', 'fa fa-newspaper-o', News::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+    }
+
+    public function configureActions(): Actions
+    {
+        return parent::configureActions()->add(Crud::PAGE_INDEX, Action::DETAIL); 
     }
 }
