@@ -27,7 +27,7 @@
                 {% set slugParts = pageTitle | split(' ') %}
                 {% set slugText = slugParts[1] %}
                 
-                <img src={{itemNews.image}} />
+                <img src={{ asset('uploads/images')}}{{itemNews.image}} />
                 <div class="card-body">
                   <h3>{{itemNews.title}}</h3>
                   <p class="card-text">{{itemNews.description}}</p>

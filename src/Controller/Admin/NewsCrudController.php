@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -41,7 +42,8 @@ class NewsCrudController extends AbstractCrudController
   
 
             TextField::new('title'),
-            TextField::new('image'),
+            // TextField::new('image'),
+            ImageField::new('image')->setBasePath('/uploads/images')->setUploadDir('public/uploads/images')->setUploadedFileNamePattern('[slug]-[timesramp].[extension]')->setRequired(false),
             TextareaField::new('description')->hideOnIndex()->setFormTypeOption('disabled', true),
             TextareaField::new('content')->hideOnIndex()->setFormType(CKEditorType::class),
             DateTimeField::new('createAt')->setFormTypeOption('disabled', true),

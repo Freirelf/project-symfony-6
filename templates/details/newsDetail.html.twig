@@ -4,7 +4,7 @@
   <div class="container">
     <h1> {{ news.title }} </h1>
     <h3> {{ news.description }} </h3>
-    <img src="{{ news.image }}" class="float-star me-4 mb-4">
+    <img src="{{ asset('uploads/images')}}{{ news.image }}" class="float-star me-4 mb-4">
     <h6><a href="{{path('app_category', {'slug':news.category.title})}}">{{news.category.title}}</a> - {{ news.createAt|ago}}</h6>
     {{ news.content|raw}}
   </div>

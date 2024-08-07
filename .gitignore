@@ -8,6 +8,9 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+.DS_Store
+.idea/*
+/public/uploads/*
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
