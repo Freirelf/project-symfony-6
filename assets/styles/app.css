@@ -119,3 +119,8 @@
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
 }
+
+.form-admin {
+    max-width: 400px;
+    margin: auto;
+}

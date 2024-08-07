@@ -9,8 +9,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class NewsCrudController extends AbstractCrudController
 {
@@ -25,7 +25,8 @@ class NewsCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Notices')
             ->setEntityLabelInSingular('Notice')
             ->setPageTitle('index', 'Manage Notices')
-            ->setPaginatorPageSize(3);
+            ->setPaginatorPageSize(3)
+            ->addFormTheme(themePath:'@FOSCKEditor/Form/ckeditor_widget.html.twig');
     }
 
 
@@ -42,7 +43,7 @@ class NewsCrudController extends AbstractCrudController
             TextField::new('title'),
             TextField::new('image'),
             TextareaField::new('description')->hideOnIndex()->setFormTypeOption('disabled', true),
-            TextareaField::new('content')->hideOnIndex(),
+            TextareaField::new('content')->hideOnIndex()->setFormType(CKEditorType::class),
             DateTimeField::new('createAt')->setFormTypeOption('disabled', true),
             TextField::new('slug')->setFormTypeOption('disabled', true)->hideOnIndex(),
         ];
