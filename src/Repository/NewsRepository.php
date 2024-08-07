@@ -90,6 +90,16 @@ public function createQueryBuilderByCategoryTitle($value): QueryBuilder
     ;
 }
 
+public function findLastNews(int $qnt=5): Array 
+   {
+       return $this->createQueryBuilder('n')
+           ->orderBy('n.createAt', 'DESC')
+           ->setMaxResults($qnt)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 //    public function findOneBySomeField($value): ?News
 //    {
 //        return $this->createQueryBuilder('n')

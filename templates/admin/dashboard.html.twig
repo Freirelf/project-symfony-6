@@ -1,24 +1,35 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}Área Administrativa{% endblock %}
-{% block page_actions %}
-    <a class="btn btn-primary" href="#">Alguma ação</a>
-{% endblock %}
-
+{% block content_title %}Bem-vindo à Administração{% endblock %}
 {% block main %}
-    <table class="datagrid">
-        <thead>
-        <tr>
-            <td>
-                Uma coluna
-            </td>
-            <td>
-                Outra coluna
-            </td>
-        </tr>
-        </thead>
-        <tbody>
-        
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-6">
+            <h3>Últimas Notícias</h3>
+            <ol>
+                {% for news in lastNews %}
+                    <li class="mb-2">
+                        <a target="_blank" href="{{ path('app_news_detail',{'slug':news.slug}) }}">{{ news.title }}</a>
+                        <br> - {{ news.createAt|date('d/m/Y h:i') }}
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="col-6">
+            <h3>Melhores Categorias</h3>
+            <ol>
+                {% for category in bestCategories %}
+                    <li><a target="_blank" href="{{ path('app_category',{'slug':category.title}) }}"> ({{ category.qtd }}) - {{ category.title }}</a></li>
+                {% endfor %}
+
+            </ol>
+        </div>
+    </div>
+    <hr>
+    {% if is_granted('ROLE_ADMIN') %}
+    <div class="row">
+        <div class="col">
+            <a target="_blank" href="{{ path('app_home') }}">Link para a home do site</a>
+        </div>
+    </div>
+    {% endif  %}
 {% endblock %}

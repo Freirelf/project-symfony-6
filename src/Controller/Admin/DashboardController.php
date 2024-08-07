@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\News;
 use App\Entity\NewsCategory;
 use App\Entity\User;
+use App\Repository\NewsCategoryRepository;
+use App\Repository\NewsRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -17,11 +19,25 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/admin', name: 'admin')]
-    // #[IsGranted('ROLE_ADMIN')]
-    public function index(): Response
+    public function __construct(private NewsRepository $newsRepository, private NewsCategoryRepository $newsCategoryRepository)
     {
-        return $this->render('admin/dashboard.html.twig');
+    }
+
+    #[Route('/admin', name: 'admin')]
+    #[IsGranted('ROLE_USER')]
+    public function index(): Response
+    {   
+        if($this->isGranted('ROLE_ADMIN')){
+            return $this->render('admin/dashboard.html.twig',[
+                'lastNews' => $this->newsRepository->findLastNews(),
+                'bestCategories' => $this->newsCategoryRepository->findBestCategories(10),
+            ]);
+        } else {
+            return $this->render('admin/dashboard.html.twig',[
+                'lastNews' => $this->newsRepository->findLastNews(),
+                'bestCategories' => $this->newsCategoryRepository->findBestCategories(5),
+            ]);
+        }
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //

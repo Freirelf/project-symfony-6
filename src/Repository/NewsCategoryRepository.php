@@ -48,6 +48,20 @@ class NewsCategoryRepository extends ServiceEntityRepository
        ;
    }
 
+   public function findBestCategories(int $qnt=5): Array 
+   {
+       return $this->createQueryBuilder('c')
+           ->join('c.news','n')
+           ->select('c.title, count(n.category) as qtd')
+           ->groupBy('n.category')
+           ->orderBy('qtd', 'DESC')
+           ->setMaxResults($qnt)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
+
 //    public function findOneBySomeField($value): ?NewsCategory
 //    {
 //        return $this->createQueryBuilder('n')
