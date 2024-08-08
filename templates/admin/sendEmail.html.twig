@@ -1,0 +1,12 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    Envio de e-mail pessoal
+{% endblock %}
+
+{% block main %}
+ <p>
+    Ao clicar no botão abaixo você enviará um e-mail de testes para o seu e-mail pessoal.<br><br>
+    <a href="{{ path('app_send_mail_personal_send') }}" class="btn btn-primary">Enviar</a>
+ </p>
+{% endblock %}

@@ -68,7 +68,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fa fa-users', User::class);
         yield MenuItem::linkToCrud('Categories', 'fa fa-bars', NewsCategory::class);
         yield MenuItem::linkToCrud('Notices', 'fa fa-newspaper-o', News::class);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToRoute('Send Email Personal', 'fa fa-envelope-o', 'app_send_mail_personal');
     }
 
     public function configureActions(): Actions
