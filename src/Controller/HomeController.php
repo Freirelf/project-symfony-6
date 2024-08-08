@@ -19,15 +19,17 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(NewsCategoryRepository $newsCategoryRepository): Response
+    public function index(NewsCategoryRepository $newsCategoryRepository,NewsRepository $newsRepository ): Response
     {   
 
         $categories = $newsCategoryRepository->findAllCategoriesOrderByTitle();
+        $news = $newsRepository->findLastNews(10);
 
         $pageTitle = 'BE News';
         return $this->render(view: 'home/index.html.twig', parameters: [
             'pageTitle' => $pageTitle,
-            'categories'=> $categories
+            'categories'=> $categories,
+            'news' => $news
         ]);
     }
 

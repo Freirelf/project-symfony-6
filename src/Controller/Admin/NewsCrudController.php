@@ -42,8 +42,8 @@ class NewsCrudController extends AbstractCrudController
   
 
             TextField::new('title'),
-            // TextField::new('image'),
-            ImageField::new('image')->setBasePath('/uploads/images')->setUploadDir('public/uploads/images')->setUploadedFileNamePattern('[slug]-[timesramp].[extension]')->setRequired(false),
+            TextField::new('image'),
+            // ImageField::new('image')->setBasePath('/uploads/images')->setUploadDir('public/uploads/images')->setUploadedFileNamePattern('[slug]-[timesramp].[extension]')->setRequired(false),
             TextareaField::new('description')->hideOnIndex()->setFormTypeOption('disabled', true),
             TextareaField::new('content')->hideOnIndex()->setFormType(CKEditorType::class),
             DateTimeField::new('createAt')->setFormTypeOption('disabled', true),
