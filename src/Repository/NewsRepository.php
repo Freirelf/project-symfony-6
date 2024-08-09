@@ -76,6 +76,22 @@ public function createQueryBuilderBySearch($value): QueryBuilder
     ;
 }
 
+public function createQueryBuilderByDate($year, $month): QueryBuilder
+{
+    $a_date = $year."-".$month."-23";
+    $lastDayOfMonth =  date("t", strtotime($a_date));
+
+    $firstDate = $year."-".$month."-01";
+    $lastDate = $year."-".$month."-".$lastDayOfMonth;
+
+    return $this->createQueryBuilder('n')
+        ->andWhere('n.createAt BETWEEN :start AND :end')
+        ->setParameter('start', $firstDate)
+        ->setParameter('end', $lastDate)
+        ->orderBy('n.createAt', 'DESC')
+        ;
+}
+
 //    /**
 //     * @return News[] Returns an array of News objects
 //     */

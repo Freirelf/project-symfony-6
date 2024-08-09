@@ -4,13 +4,13 @@
 
   <div class="container"> 
     <h1> Buscando por {{ search }} </h1>
-    {{dump(pager)}}
+
     {% for newsItem in pager %}
       <hr>
       <div class="row gx-5">
         <div class="col-md-4 mb-4">
           <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
-            <img src={{ asset('uploads/images')}}{{ newsItem.image }} class="img-fluid" />
+            <img src={{ newsItem.image }} class="img-fluid" />
             <a href="#!">
               <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
             </a>
@@ -22,7 +22,7 @@
           <div>{{ newsItem.createAt|date('d/m/y')}} - {{ newsItem.createAt|ago}}</div>
           <h4><strong>{{ newsItem.title }}</strong></h4>
           <p class="text-muted">
-            {{newsItem.description }}
+            {{newsItem.description|raw }}
           </p>
           <a href="{{ path('app_news_detail', {'slug':newsItem.slug})}}" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Read more</a>
         </div>

@@ -101,4 +101,37 @@ class HomeController extends AbstractController
         ]);
 
     }
+
+    #[Route('/data/', name: 'app_news_date')]
+    public function filterDate(Request $request, NewsRepository $newsRepository,NewsCategoryRepository $categoryRepository): Response
+    {
+        $year = $request->query->get('ano');
+        $month = $request->query->get('mes');
+
+        if (strlen($month) == 1){
+            $month = "0".$month;
+        }
+
+        $categories = $categoryRepository->findAll();
+
+        // $news = $newsRepository->findBySearch($search);
+        $queryBuilder = $newsRepository->createQueryBuilderByDate($year,$month);
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            $adapter,
+            $request->query->get('page',1),
+            6
+        );
+
+        // montar a string do mês e ano
+        $formatter = new \IntlDateFormatter('pt_BR', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, pattern: "MMMM Y");
+        $searchString  = $year.'-'.$month.'-01';
+
+        return $this->render('search/search.html.twig', [
+            'pageTitle' => 'Resultado da pesquisa',
+            'categories' => $categories,
+            'pager' => $pagerFanta,
+            'search' => $formatter->format(date( strtotime($searchString))),
+        ]);
+    }
 }
